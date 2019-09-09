@@ -1,0 +1,29 @@
+---
+- debug:
+    msg: "name: {{ meta.name }}"
+
+- name: "{{ action }} instance"
+  gcp_sql_instance:
+    name: "{{ meta.name }}"
+    settings:
+      ip_configuration:
+        authorized_networks:
+        - name: google dns server
+          value: 8.8.8.8/32
+      tier: db-n1-standard-1
+    region: us-central1
+    project: "{{ project }}"
+    auth_kind: serviceaccount
+    service_account_file: /tmp/key.json
+    state: "{{ state }}"
+  register: instance
+
+- name: "{{ action }} database"
+  gcp_sql_database:
+    name: "{{ meta.name }}"
+    charset: utf8
+    instance: "{{ instance }}"
+    project: "{{ project }}"
+    auth_kind: serviceaccount
+    service_account_file:  /tmp/key.json 
+    state: "{{ state }}"

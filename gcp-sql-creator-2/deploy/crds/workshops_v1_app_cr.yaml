@@ -1,0 +1,7 @@
+apiVersion: workshops.operator.redhatgov.io/v1
+kind: App
+metadata:
+  name: test-db-228
+spec:
+  # Add fields here
+  project: playground-248409

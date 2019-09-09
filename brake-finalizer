@@ -1,0 +1,6 @@
+kubectl patch apps.workshops.operator.redhatgov.io test-db-228 -p '{"metadata":{"finalizers":[]}}' --type=merge
+kubectl delete crd apps.workshops.operator.redhatgov.io  
+kubectl create -f app/deploy/crds/workshops_v1_app_crd.yaml
+
+https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/#finalizers
+https://github.com/kubernetes/kubernetes/issues/60538

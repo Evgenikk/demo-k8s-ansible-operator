@@ -1,0 +1,6 @@
+apiVersion: workshops.operator.redhatgov.io/v1
+kind: App
+metadata:
+  name: gcp-sql
+spec:
+  project: playground-248409

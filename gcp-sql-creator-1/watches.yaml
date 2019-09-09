@@ -1,0 +1,7 @@
+---
+- version: v1
+  group: workshops.operator.redhatgov.io
+  kind: App
+  role: /opt/ansible/roles/app
+
+
