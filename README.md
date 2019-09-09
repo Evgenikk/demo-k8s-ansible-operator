@@ -22,3 +22,8 @@ kubectl create -f deploy/crds/workshops_v1_app_crd.yaml
 kubectl create -f deploy/operator.yaml
 kubectl create -f deploy/crds/workshops_v1_app_cr.yaml
 ```
+
+
+Finalizers are arbitrary string values, that when present ensure that a hard delete of a resource is not possible while they exist.
+
+The first delete request on an object with finalizers sets a value for the metadata.deletionTimestamp field but does not delete it. Once this value is set, entries in the finalizer list can only be removed.
