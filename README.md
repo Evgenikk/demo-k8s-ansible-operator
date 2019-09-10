@@ -1,14 +1,20 @@
-Подготовка:
-Кластер из двух нод, доступен через kubectl, все образы собраны.
+Пререквизиты:
+k8s кластер, ключ сервис аккаунт в облаке gcp, установленный operator-sdk
 
-gcloud container clusters get-credentials standard-cluster-3 --zone us-central1-a --project playground-248409
-Сперва запускать, потом показывать
+Структура репозитория:
+В какждой дирректории "gcp-sql-creator" находится набор файлов для сборки и деплоя оператора, для создания и удаления базы в GCP.
+v1)   Нет действий при удалении базы
+v1.1) задачи в роли по удалению базы описаны плохо, из-за этого не получается удалить CR и  CRD.(даже если убрать контроллер) Может быть полезно в данной ситуации https://github.com/kubernetes/kubernetes/issues/60538
+v2) Корректно создает и удаляет базу.
 
 
-cd gcp-sql-creator-1
-kubectl app
+Чтобы собрать оператор каждой версии необходимо:
+1) Положить `key.json` (ключ от сервис аккаунта) в папки `gcp-sql-creator-1`, `gcp-sql-creator-1-1`, `gcp-sql-creator-2`
+2) Выполнить `operator-sdk build <тэг>` из `gcp-sql-creator-1`, `gcp-sql-creator-1-1`, `gcp-sql-creator-2` для сборки докер образа.
+3) Поменять в `gcp-sql-creator-1/deploy/operator.yaml` образ
 
 ```
+cd gcp-sql-creator-1
 kubectl create -f deploy/service_account.yaml  
 kubectl create -f deploy/role.yaml   
 kubectl create -f deploy/role_binding.yaml 
@@ -24,6 +30,4 @@ kubectl create -f deploy/crds/workshops_v1_app_cr.yaml
 ```
 
 
-Finalizers are arbitrary string values, that when present ensure that a hard delete of a resource is not possible while they exist.
-
-The first delete request on an object with finalizers sets a value for the metadata.deletionTimestamp field but does not delete it. Once this value is set, entries in the finalizer list can only be removed.
+Еще полезная ссылка про  finalizers: https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/#finalizers
